@@ -8,7 +8,7 @@ namespace AutopartsSystemBD
     public static class DataStore
     {
         private static readonly string ConnectionString =
-            "Host=localhost;Port=5432;Database=autoparts_db;Username=postgres;Password=221353";
+            "Host=localhost;Port=5432;Database=autoparts_db;Username=postgres;Password=your_password";
 
         public static List<User> Users { get; private set; } = new();
         public static List<Supplier> Suppliers { get; private set; } = new();
