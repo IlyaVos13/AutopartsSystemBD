@@ -1,4 +1,4 @@
-﻿using Npgsql;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -222,6 +222,65 @@ namespace AutopartsSystemBD
             return Convert.ToDecimal(result);
         }
 
+        public static void AddUser(string login, string password, string role)
+        {
+            using var connection = GetConnection();
+            using var command = new NpgsqlCommand(
+                "INSERT INTO users (login, password, role) VALUES (@login, @password, @role)",
+                connection
+            );
+
+            command.Parameters.AddWithValue("login", login);
+            command.Parameters.AddWithValue("password", password);
+            command.Parameters.AddWithValue("role", role);
+
+            command.ExecuteNonQuery();
+            RefreshAll();
+        }
+
+        public static void UpdateUserRole(int userId, string role)
+        {
+            using var connection = GetConnection();
+            using var command = new NpgsqlCommand(
+                "UPDATE users SET role = @role WHERE id = @id",
+                connection
+            );
+
+            command.Parameters.AddWithValue("id", userId);
+            command.Parameters.AddWithValue("role", role);
+
+            command.ExecuteNonQuery();
+            RefreshAll();
+        }
+
+        public static void UpdateUserPassword(int userId, string password)
+        {
+            using var connection = GetConnection();
+            using var command = new NpgsqlCommand(
+                "UPDATE users SET password = @password WHERE id = @id",
+                connection
+            );
+
+            command.Parameters.AddWithValue("id", userId);
+            command.Parameters.AddWithValue("password", password);
+
+            command.ExecuteNonQuery();
+            RefreshAll();
+        }
+
+        public static void DeleteUser(int userId)
+        {
+            using var connection = GetConnection();
+            using var command = new NpgsqlCommand(
+                "DELETE FROM users WHERE id = @id",
+                connection
+            );
+
+            command.Parameters.AddWithValue("id", userId);
+
+            command.ExecuteNonQuery();
+            RefreshAll();
+        }
         private static void LoadUsers()
         {
             Users.Clear();
